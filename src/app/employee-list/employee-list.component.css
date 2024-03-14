@@ -45,9 +45,9 @@
 .modal-body{
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
+    justify-content: center;
     align-items: center;
-    width: 40%;
+    /* width: 40%; */
     padding: 20px;
 }
 
@@ -56,4 +56,9 @@
     align-items: center;
     justify-content: flex-end;
     gap: 36%;
+    width: 100%;
+}
+
+ng-template{
+    align-items: center;
 }

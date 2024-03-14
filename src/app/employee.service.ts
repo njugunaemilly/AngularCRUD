@@ -30,7 +30,8 @@ export class EmployeeService {
   }
 
   getEmployeeById(id: number): Observable<Employee> {
-    return this.httpClient.get<Employee>(`${this.url}/${id}`);
+    const url = `${this.url}/${id}`;
+    return this.httpClient.get<Employee>(url);
   }
 
 }

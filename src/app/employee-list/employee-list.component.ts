@@ -18,22 +18,24 @@ export class EmployeeListComponent implements OnInit {
   totalItems = 4;
   closeResult!: string;
   employeeForm!: FormGroup;
-  employeeToUpdate: Employee |null=null;
+  employeeToUpdate: Employee | null = null;
   employeeView!: Employee;
   deleteId!: number;
+  specificEmployee!: any;
 
   constructor(
     private employeeService: EmployeeService,
     private modalService: NgbModal,
     private router: Router,
     private fb: FormBuilder
-  )  {
+  ) {
     this.employeeForm = this.fb.group({
       id: [''],
       firstName: [''],
       lastName: [''],
       email: [''],
-    });}
+    });
+  }
 
   ngOnInit(): void {
     this.getEmployees();
@@ -48,17 +50,17 @@ export class EmployeeListComponent implements OnInit {
   }
 
   open(content: any, employee?: Employee) {
-    this.employeeToUpdate=employee || null;// If adding new employee set to nuull
-    this.employeeForm.reset();//reset form
-    
-//implement this if employee information is being updated
-    if(employee){
+    this.employeeToUpdate = employee || null; // If adding new employee set to nuull
+    this.employeeForm.reset(); //reset form
+
+    //implement this if employee information is being updated
+    if (employee) {
       this.employeeForm.patchValue({
         id: employee.id,
         firstName: employee.firstName,
         lastName: employee.lastName,
         email: employee.email,
-      })
+      });
     }
 
     this.modalService
@@ -91,17 +93,15 @@ export class EmployeeListComponent implements OnInit {
   saveEmployee() {
     const employeeData = this.employeeForm.value;
 
-    if(this.employeeToUpdate){ 
+    if (this.employeeToUpdate) {
       this.employeeService
         .updateEmployee(this.employeeToUpdate.id, employeeData)
-        .subscribe(()=>this.modalService.dismissAll())
-       }
-       else{
-        this.employeeService.addEmployee(employeeData).subscribe(()=>{
-          this.gotToEmployeeList()
-        })
-       }
-      
+        .subscribe(() => this.modalService.dismissAll());
+    } else {
+      this.employeeService.addEmployee(employeeData).subscribe(() => {
+        this.gotToEmployeeList();
+      });
+    }
   }
 
   gotToEmployeeList() {
@@ -111,16 +111,15 @@ export class EmployeeListComponent implements OnInit {
   onSubmit() {
     const employeeData = this.employeeForm.value;
 
-    if (this.employeeToUpdate){
+    if (this.employeeToUpdate) {
       this.employeeService
-      .updateEmployee(this.employeeToUpdate.id, employeeData)
-      .subscribe(() => {
-        console.log('Employee updated successfully');
-        this.getEmployees();
-        this.modalService.dismissAll();
-      });
-    }
-    else{
+        .updateEmployee(this.employeeToUpdate.id, employeeData)
+        .subscribe(() => {
+          console.log('Employee updated successfully');
+          this.getEmployees();
+          this.modalService.dismissAll();
+        });
+    } else {
       this.employeeService.addEmployee(employeeData).subscribe({
         next: (result) => {
           console.log('Employee added successfully:', result);
@@ -129,33 +128,22 @@ export class EmployeeListComponent implements OnInit {
         },
       });
     }
-  
   }
 
- openDetails(contentView: any, employee: Employee) {
-  this.employee
-  this.employeeService.getEmployeeById(employee.id).subscribe({
-    next: (res: any) => {
-      console.log(employee.id);
 
-      // this.employeeView = {
-      //   firstName: employee.firstName,
-      //   lastName: employee.lastName,
-      //   email: employee.email,
-      // };
-
-      this.modalService.open(contentView, {
-        centered: true,
-        backdrop: 'static',
-        size: 'lg',
-      });
-    },
-    error: (err: any) => {
-      console.error('Error fetching employee details', err);
-    },
-  });
-}
-
+  openDetails(contentView: any, employee: Employee) {
+    this.employeeService.getEmployeeById(employee.id).subscribe({
+      next: (res: Employee) => {
+        // this.specificEmployee = res;
+        this.employeeView = res;
+        this.modalService.open(contentView, {
+          centered: true,
+          backdrop: 'static',
+          size: 'sm',
+        });
+      },
+    });
+  }
 
   openDelete(targetModal: any, employee: Employee) {
     this.deleteId = employee.id;

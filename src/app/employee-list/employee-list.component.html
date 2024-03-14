@@ -129,8 +129,15 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body">
-      <form>
+    <div class="modal-body container">
+      <div class="row">
+        <div class="col">
+          <p>First Name: {{employeeView.firstName}}</p>
+          <p>Last Name: {{employeeView.lastName}}</p>
+          <p>Email: {{employeeView.email}}</p>
+        </div>
+      </div>
+      <!-- <form>
         <div class="form-group">
           <label for="firstName">First Name</label>
           <input
@@ -167,7 +174,7 @@
             Close
           </button>
         </div>
-      </form>
+      </form> -->
     </div>
   </ng-template>
 
