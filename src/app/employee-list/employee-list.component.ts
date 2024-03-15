@@ -92,6 +92,7 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
+
   saveEmployee() {
     const employeeData = this.employeeForm.value;
   
@@ -102,14 +103,14 @@ export class EmployeeListComponent implements OnInit {
     saveOperation.subscribe(() => {
       const action = this.employeeToUpdate ? 'updated' : 'added';
       console.log(`Employee ${action} successfully`);
-      this.handleEmployeeAction();
+      this.handleEmployeeAction(action);
     });
   }
   
-  handleEmployeeAction() {
+  handleEmployeeAction(action: string) {
     this.getEmployees();
     this.modalService.dismissAll();
-    this.toastr.success('Employee information update successful');
+    this.toastr.success(`Employee ${action} successful`);
   }
   
   gotToEmployeeList() {
@@ -142,7 +143,7 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.deleteEmployee(this.deleteId).subscribe(() => {
       this.getEmployees();
       this.modalService.dismissAll();
-      this.toastr.success('Employees deleted')
+      this.toastr.success('Employee successfully deleted')
     });
   }
 }
