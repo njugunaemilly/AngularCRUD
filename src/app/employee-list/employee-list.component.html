@@ -1,0 +1,243 @@
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a class="navbar-brand" href="/">HOME</a>
+  <div class="button-container">
+    <button class="btn btn-primary btn-small btn-nav" (click)="open(content)">
+      <i class="fa fa-user"></i>Add Employee
+    </button>
+  </div>
+</nav>
+<div class="row">
+  <h2 class="list-header">Employee List</h2>
+  <pre></pre>
+
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr
+          ngFor="let employee of employees | slice:(page-1) itemsPerPage : page* itemsPerPage; track employee"
+        >
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let employee of employees
+              | slice : (page - 1) * itemsPerPage : page * itemsPerPage;
+            track: employee
+          "
+        >
+          <td>{{ employee.firstName }}</td>
+          <td>{{ employee.lastName }}</td>
+          <td>{{ employee.email }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-info"
+              (click)="openDetails(contentView, employee)"
+            >
+              <i class="fa fa-search"></i>Details
+            </button>
+            <button
+              class="btn btn-sm btn-warning"
+              (click)="open(content, employee)"
+            >
+              <i class="fa fa-edit"></i>Edit
+            </button>
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="openDelete(contentDelete, employee)"
+            >
+              <i class="fa fa-remove"></i>Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        {{ employeeToUpdate ? "Edit Employee" : "Add Employee" }}
+      </h4>
+      <button
+        type="button"
+        class="close btnv float-right"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            formControlName="firstName"
+            type="text"
+            class="form-control"
+            placeholder="First Name"
+          />
+          <small
+          *ngIf="
+            employeeForm.get('firstName')?.invalid &&
+            employeeForm.get('firstName')?.touched
+          "
+          >Please enter first name
+        </small> 
+             </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            formControlName="lastName"
+            type="text"
+            class="form-control"
+            placeholder="Last Name"
+          />
+          <small
+          *ngIf="
+            employeeForm.get('lastName')?.invalid &&
+            employeeForm.get('lastName')?.touched
+          "
+          >Please enter last name
+        </small> 
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            formControlName="email"
+            type="email"
+            class="form-control"
+            placeholder="Email"
+          />
+          <small
+          *ngIf="
+            employeeForm.get('email')?.invalid &&
+            employeeForm.get('email')?.touched
+          "
+          >Please enter a valid email
+        </small> 
+        </div>
+        <div class="text-center button-container ml-auto">
+          <button type="submit" class="btn btn-primary" [disabled]="employeeForm.invalid">Save</button>
+          <button
+            type="button"
+            class="btn btn-outline-dark"
+            (click)="modal.close('Close click')"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #contentView let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title2">Employee Information</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body container">
+      <div class="row">
+        <div class="col">
+          <p>First Name: {{employeeView.firstName}}</p>
+          <p>Last Name: {{employeeView.lastName}}</p>
+          <p>Email: {{employeeView.email}}</p>
+        </div>
+      </div>
+     
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            [readonly]="true"
+            type="text"
+            class="form-control"
+            placeholder="First Name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            [readonly]="true"
+            type="text"
+            class="form-control"
+            placeholder="Last Name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            [readonly]="true"
+            type="email"
+            class="form-control"
+            placeholder="Email"
+          />
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-dark"
+            (click)="modal.close('Save click')"
+          >
+            Close
+          </button>
+        </div>
+    
+    </div>
+  </ng-template>
+
+  <ng-template #contentDelete let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Confirm Delete</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h2>Are you sure you want to delete this record?</h2>
+      <div>
+        <button
+          data-dismiss="modal"
+          class="btn btn-danger"
+          (click)="onDelete()"
+        >
+          Yes, Delete!
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.close('Save click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer"></div>
+  </ng-template>
+
+  <br />
+  <div class="pagination">
+    <ngb-pagination
+      [collectionSize]="employees.length"
+      [(page)]="page"
+      [pageSize]="itemsPerPage"
+    />
+    <pre>{{ page }}</pre>
+  </div>
+</div>

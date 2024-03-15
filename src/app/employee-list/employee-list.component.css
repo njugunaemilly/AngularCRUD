@@ -1,0 +1,64 @@
+.navbar-dark {
+    background-color: blanchedalmond;
+    ;
+
+    .navbar-brand{
+        font-size: 30px;
+        padding-left: 15px;
+        font-weight: bold;
+        color: #181b1c;
+    }
+
+    .button-container{
+        margin-left: auto;
+    }
+
+    button{
+        margin: 12px;
+        background-color: #ffc107;
+        border: #fff 0.3px solid;
+        color: #181b1c;
+    } 
+}
+.container{
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+    position: relative;
+    bottom: 0px;
+}
+
+.list-header{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.modal-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* width: 40%; */
+    padding: 20px;
+}
+
+
+.modal-header{
+    align-items: center;
+    justify-content: flex-end;
+    gap: 36%;
+    width: 100%;
+}
+
+ng-template{
+    align-items: center;
+}
