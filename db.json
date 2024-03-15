@@ -63,32 +63,20 @@
     {
       "id": 12,
       "firstName": "helen",
-      "lastName": "keller",
+      "lastName": "Keller",
       "email": "hkels@inst.com"
     },
     {
       "id": 13,
-      "firstName": "helen",
+      "firstName": "Helen",
       "lastName": "keller",
       "email": "hkels2@inst.com"
     },
     {
       "id": 14,
-      "firstName": "hellen",
-      "lastName": "keller",
-      "email": "hkels@inst.com"
-    },
-    {
-      "id": 15,
-      "firstName": null,
-      "lastName": null,
-      "email": null
-    },
-    {
-      "id": 16,
-      "firstName": "patrick",
-      "lastName": "jane",
-      "email": "pjane@cib.com"
+      "firstName": "Sofia",
+      "lastName": "Princess",
+      "email": "sofpri@inst.com"
     }
   ]
 }

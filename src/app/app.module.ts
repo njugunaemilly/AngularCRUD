@@ -9,6 +9,8 @@ import { UpdateEmployeesComponent } from './update-employees/update-employees.co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     NgbPaginationModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

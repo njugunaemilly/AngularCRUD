@@ -3,7 +3,8 @@ import { EmployeeService } from '../employee.service';
 import { Employee } from '../employee';
 import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-employee-list',
@@ -27,15 +28,16 @@ export class EmployeeListComponent implements OnInit {
     private employeeService: EmployeeService,
     private modalService: NgbModal,
     private router: Router,
-    private fb: FormBuilder
-  ) {
-    this.employeeForm = this.fb.group({
-      id: [''],
-      firstName: [''],
-      lastName: [''],
-      email: [''],
-    });
-  }
+    private fb: FormBuilder,
+    private toastr: ToastrService
+) {
+  this.employeeForm = this.fb.group({
+    id: [''],
+    firstName: ['', Validators.required], 
+    lastName: ['', Validators.required],
+    email: ['', Validators.email] 
+  });
+}
 
   ngOnInit(): void {
     this.getEmployees();
@@ -92,45 +94,27 @@ export class EmployeeListComponent implements OnInit {
 
   saveEmployee() {
     const employeeData = this.employeeForm.value;
-
-    if (this.employeeToUpdate) {
-      this.employeeService
-        .updateEmployee(this.employeeToUpdate.id, employeeData)
-        .subscribe(() => this.modalService.dismissAll());
-    } else {
-      this.employeeService.addEmployee(employeeData).subscribe(() => {
-        this.gotToEmployeeList();
-      });
-    }
+  
+    const saveOperation = this.employeeToUpdate ?
+      this.employeeService.updateEmployee(this.employeeToUpdate.id, employeeData) :
+      this.employeeService.addEmployee(employeeData);
+  
+    saveOperation.subscribe(() => {
+      const action = this.employeeToUpdate ? 'updated' : 'added';
+      console.log(`Employee ${action} successfully`);
+      this.handleEmployeeAction();
+    });
   }
-
+  
+  handleEmployeeAction() {
+    this.getEmployees();
+    this.modalService.dismissAll();
+    this.toastr.success('Employee information update successful');
+  }
+  
   gotToEmployeeList() {
     this.router.navigate(['/view-employees']);
   }
-
-  onSubmit() {
-    const employeeData = this.employeeForm.value;
-
-    if (this.employeeToUpdate) {
-      this.employeeService
-        .updateEmployee(this.employeeToUpdate.id, employeeData)
-        .subscribe(() => {
-          console.log('Employee updated successfully');
-          this.getEmployees();
-          this.modalService.dismissAll();
-        });
-    } else {
-      this.employeeService.addEmployee(employeeData).subscribe({
-        next: (result) => {
-          console.log('Employee added successfully:', result);
-          this.getEmployees();
-          this.modalService.dismissAll();
-        },
-      });
-    }
-  }
-
-
   openDetails(contentView: any, employee: Employee) {
     this.employeeService.getEmployeeById(employee.id).subscribe({
       next: (res: Employee) => {
@@ -158,6 +142,7 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.deleteEmployee(this.deleteId).subscribe(() => {
       this.getEmployees();
       this.modalService.dismissAll();
+      this.toastr.success('Employees deleted')
     });
   }
 }
