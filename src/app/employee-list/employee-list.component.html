@@ -100,8 +100,8 @@
           />
           <small
           *ngIf="
-            employeeForm.get('firstName')?.invalid &&
-            employeeForm.get('firstName')?.touched
+            employeeForm.get('lastName')?.invalid &&
+            employeeForm.get('lastName')?.touched
           "
           >Please enter last name
         </small> 
@@ -116,18 +116,14 @@
           />
           <small
           *ngIf="
-            employeeForm.get('firstName')?.invalid &&
-            employeeForm.get('firstName')?.touched
+            employeeForm.get('email')?.invalid &&
+            employeeForm.get('email')?.touched
           "
           >Please enter a valid email
         </small> 
         </div>
         <div class="text-center button-container ml-auto">
           <button type="submit" class="btn btn-primary" (click)="saveEmployee()">{{ employeeToUpdate ? "Save Changes" : "Submit" }}</button>
-<!-- 
-          <button type="submit" class="btn btn-primary" (click)="(onSubmit)">
-            
-          </button> -->
           <button
             type="button"
             class="btn btn-outline-dark"
